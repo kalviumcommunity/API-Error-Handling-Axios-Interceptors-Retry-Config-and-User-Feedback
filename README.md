@@ -37,4 +37,3 @@ npm run dev                                      # Express :3001, Vite :5173
 - **Load flaky data** → `/flaky` fails once then succeeds; with `retry: 1` you'll see **two**
   requests in the Network tab, then the success message.
 
-See `question.md` for the full brief and `rubric.md` for marking.
