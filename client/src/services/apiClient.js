@@ -12,10 +12,17 @@ const apiClient = axios.create({
 // - add an error handler that returns Promise.reject(error)
 apiClient.interceptors.request.use(
   (config) => {
-    // add token here
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => {
+    return Promise.reject(error);
+  }
 );
 
 // TODO 2 — Response interceptor: handle global errors on the way back.
@@ -26,9 +33,18 @@ apiClient.interceptors.request.use(
 //     else  -> let it pass through (400/409/404 belong to the component)
 // - ALWAYS end with: return Promise.reject(error)
 apiClient.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    return response;
+  },
   (error) => {
-    // handle 401 and 5xx here, then re-throw
+    const status = error.response?.status;
+
+    if (status === 401) {
+      window.location.href = "/login";
+    } else if (status >= 500) {
+      window.alert("Something went wrong on the server. Please try again.");
+    }
+
     return Promise.reject(error);
   }
 );
