@@ -12,7 +12,13 @@ const apiClient = axios.create({
 // - add an error handler that returns Promise.reject(error)
 apiClient.interceptors.request.use(
   (config) => {
-    // add token here
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      config.headers = config.headers || {};
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
     return config;
   },
   (error) => Promise.reject(error)
@@ -28,7 +34,14 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    // handle 401 and 5xx here, then re-throw
+    if (error.response?.status === 401) {
+      window.location.href = "/login";
+    }
+
+    if (error.response?.status >= 500) {
+      window.alert("Something went wrong. Please try again later.");
+    }
+
     return Promise.reject(error);
   }
 );
