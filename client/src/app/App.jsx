@@ -4,7 +4,7 @@ import apiClient from "../services/apiClient";
 
 // Plain service calls — no try/catch, no error handling here.
 // Global concerns (401, 5xx, retry) live in the shared layer.
-const getThreads = () => apiClient.get("/threads").then((r) => r.data);
+const getThreads = () => apiClient.get("/api/threads").then((r) => r.data);
 const getFlaky = () => apiClient.get("/flaky").then((r) => r.data);
 
 export default function App() {
