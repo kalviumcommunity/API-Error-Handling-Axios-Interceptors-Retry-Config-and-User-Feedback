@@ -28,12 +28,11 @@ npm run dev                                      # Express :3001, Vite :5173
 ```
 
 ## What you complete
-- `client/src/services/apiClient.js` — request interceptor (TODO 1) + response interceptor (TODO 2).
-- `client/src/app/queryClient.js` — `retry` + `retryDelay` (TODO 3).
+- `client/src/services/apiClient.js` — attach the local storage token and handle global 401 redirects and 5xx alerts.
+- `client/src/app/queryClient.js` — retry queries once with exponential backoff capped at 30 seconds.
 
 ## How to test (buttons on the page)
 - **Trigger 401** → interceptor should send the browser to `/login`.
-- **Trigger 500** → interceptor should show a global message.
+- **Trigger 500** → interceptor should show a global alert; the request error still propagates.
 - **Load flaky data** → `/flaky` fails once then succeeds; with `retry: 1` you'll see **two**
   requests in the Network tab, then the success message.
-
